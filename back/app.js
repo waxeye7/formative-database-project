@@ -1,4 +1,5 @@
 //code content of APP.JS
+require('dotenv').config()
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -13,7 +14,7 @@ app.use(function(req, res, next){
 });
 //DATABASE
 // **** change this below DB link to your mongoDB cluster ****
-const DB = "mongodb+srv://admin:mhGUCbEgX4CPcDmN@cluster0.ooxx6ml.mongodb.net/formative-database?retryWrites=true&w=majority";//insert your mongoDB link that emerges out of the process described in teams for step by step mongoDB creation. replace <password> part with password you have given to your main user at cluster creation
+const DB = process.env.URL;
 const PORT = 4000;
 mongoose.connect(
     DB,
