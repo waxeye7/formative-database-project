@@ -14,7 +14,7 @@ app.use(function(req, res, next){
 });
 //DATABASE
 // **** change this below DB link to your mongoDB cluster ****
-const DB = process.env.URL;
+const DB = "mongodb+srv://admin2:rOJoAZ6KSyyVewPp@cluster0.ooxx6ml.mongodb.net/formative-database?retryWrites=true&w=majority";
 const PORT = 4000;
 mongoose.connect(
     DB,
