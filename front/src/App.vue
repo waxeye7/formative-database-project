@@ -94,7 +94,7 @@ export default {
         // GET (single) User by Username
         async get_user_by_username_and_verify_if_admin(username) {
             if (username.length) {
-                const usernameResponse = await fetch("https://idyllic-alfajores-43aebc.netlify.app/users/getuserbyusername/" + username);
+                const usernameResponse = await fetch("http://localhost:4000/users/getuserbyusername/" + username);
                 const received_user_data = await usernameResponse.json();
                 console.log(received_user_data)
                 let user = received_user_data[0]
@@ -112,7 +112,7 @@ export default {
         },
 
         async fetch_all_works() {
-            const response = await fetch("https://idyllic-alfajores-43aebc.netlify.app/works/");
+            const response = await fetch("http://localhost:4000/works/");
             const received_data = await response.json();
             this.works_list = received_data;
             console.log(received_data)
@@ -124,7 +124,7 @@ export default {
                     objectOfInputs.author.length &&
                     objectOfInputs.imageUrl.length &&
                     objectOfInputs.url.length) {
-                    let fetch_url = 'https://idyllic-alfajores-43aebc.netlify.app/delete/' + workID;
+                    let fetch_url = 'http://localhost:4000/works/delete/' + workID;
                     const response = await fetch(fetch_url, { method: "DELETE" });
                     const received_data = await response.json();
                     this.fetch_all_works();
@@ -139,7 +139,7 @@ export default {
                     objectOfInputs.imageUrl.length &&
                     objectOfInputs.url.length) {
 
-                    const response = await fetch("https://idyllic-alfajores-43aebc.netlify.app/update/" + workID, {
+                    const response = await fetch("http://localhost:4000/works/update/" + workID, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -163,7 +163,7 @@ export default {
                 objectOfInputs.author.length &&
                 objectOfInputs.imageUrl.length &&
                 objectOfInputs.url.length) {
-                const response = await fetch("https://idyllic-alfajores-43aebc.netlify.app/works/addwork", {
+                const response = await fetch("http://localhost:4000/works/addwork", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
