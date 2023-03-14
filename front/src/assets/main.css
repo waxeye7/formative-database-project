@@ -23,3 +23,6 @@
 .align-center {
   align-items:center;
 }
+.fit-content {
+  width:fit-content;
+}

@@ -25,7 +25,7 @@ router.delete('/delete/:id', async (req, res) => {
 
 // UPDATE a Work by ID
 router.put('/update/:id', async (req, res) => {
-    const toUpdate_Work = await User.findByIdAndUpdate(
+    const toUpdate_Work = await Work.findByIdAndUpdate(
         { _id : req.params.id }, 
         { $set: req.body }
     );
