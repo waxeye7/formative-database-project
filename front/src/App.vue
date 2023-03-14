@@ -15,7 +15,7 @@ import Button from 'primevue/button';
 <template>
     <div v-if="!current_username.length" class="input-username-container">
         <div>
-            <h1 class="login-text text-align-center">log in</h1>
+            <h1 class="login-text text-align-center">log in (user admin to read/write db)</h1>
             <div class="flex">
                 <span class="p-float-label">
                     <InputText id="username" v-model="typed" />
@@ -96,7 +96,6 @@ export default {
             if (username.length) {
                 const usernameResponse = await fetch("http://localhost:4000/users/getuserbyusername/" + username);
                 const received_user_data = await usernameResponse.json();
-                console.log(received_user_data)
                 let user = received_user_data[0]
                 if (user && user.isAdmin) {
                     this.admin = true;
@@ -115,7 +114,6 @@ export default {
             const response = await fetch("http://localhost:4000/works/");
             const received_data = await response.json();
             this.works_list = received_data;
-            console.log(received_data)
         },
         async delete_work(workID) {
             if (this.works_list.filter(work => work._id === workID).length > 0) {
