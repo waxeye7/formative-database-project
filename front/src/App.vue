@@ -29,44 +29,59 @@ import Button from 'primevue/button';
 
     </div>
     <div v-else-if="current_username.length" class="container">
-        <h1>hello {{ current_username }}</h1>
+        <div :class="{'change-upper-section-height':!admin}" class="upper-section align-text">
+            <span>hello {{ current_username }} <span class="smaller-text" v-if="admin">(you are admin)</span></span>
+            
         <div v-if="admin">
-            <h2>you are admin</h2>
+            
 
             <div class="inputs-wrapper">
-                <label for="name">name</label>
-                <InputText class="InputText" type="text" v-model="interact.name" />
-                <label for="imageUrl">imageUrl</label>
-                <InputText class="InputText" type="text" v-model="interact.imageUrl" />
-                <label for="author">author</label>
-                <InputText class="InputText" type="text" v-model="interact.author" />
-                <label for="url">url</label>
-                <InputText class="InputText" type="text" v-model="interact.url" />
+                <div class="flex flex-col very-small-margin-right-left">
+                    <label for="name">name</label>
+                    <InputText class="InputText" type="text" v-model="interact.name" />
+                </div>
+
+                <div class="flex flex-col very-small-margin-right-left">
+                    <label for="imageUrl">imageUrl</label>
+                    <InputText class="InputText" type="text" v-model="interact.imageUrl" />
+                </div>
+
+                <div class="flex flex-col very-small-margin-right-left">
+                    <label for="author">author</label>
+                    <InputText class="InputText" type="text" v-model="interact.author" />
+                </div>
+
+                <div class="flex flex-col very-small-margin-right-left">
+                    <label for="url">url</label>
+                    <InputText class="InputText" type="text" v-model="interact.url" />
+                </div>
+            </div>
 
                 <div class="flex buttons-wrapper">
                     <Button class="small-margin-right" @click="create_work" label="Create Work" />
                     <Button class="small-margin-right" @click="update_work(currentID)" label="Update Work" />
                     <Button @click="delete_work(currentID)" label="Delete Work" />
                 </div>
-
-            </div>
-
-
-
+        </div>
         </div>
 
-        <div v-for="(work) in works_list" :key="work._id">
+
+    <div class="lower-section" :class="{'change-bottom-section-height':!admin}" >
+        <div class="items-wrapper" v-for="(work) in reversed_list" :key="work._id">
             <div @click="selected = work._id; interact.name = work.name; interact.author = work.author; interact.imageUrl = work.imageUrl; interact.url = work.url; currentID = work._id;"
-                :class="{ 'red_border': admin && selected && selected === work._id }" class="flex info-wrapper">
-                <div class="flex flex-col">
+                :class="[{ 'red_border': admin && selected && selected === work._id },{'selected':selected && selected === work._id}]" class="flex info-wrapper">
+                <div class="flex flex-col text-section">
                     <h1 class="small-margin-right">title: {{ work.name }}</h1>
                     <h1 class="small-margin-right">author: {{ work.author }}</h1>
-                    <a class="fit-content small-margin-right" target="_blank" :href="work.url">site</a>
+                    <a class="fit-content small-margin-right" target="_blank" :href="work.url">{{work.url}}</a>
                 </div>
                 <img :src="work.imageUrl">
             </div>
 
         </div>
+    </div>
+
+
 
 
     </div>
@@ -88,6 +103,11 @@ export default {
             current_username: "",
             admin: false,
             works_list: [],
+        }
+    },
+    computed: {
+        reversed_list() {
+            return this.works_list.reverse();
         }
     },
     methods: {
@@ -185,24 +205,65 @@ export default {
 </script>
 
 <style scoped>
+.text-section {
+    display: flex;
+    justify-content: space-around;
+    max-width: 400px;
+}
+.very-small-margin-right-left {
+    margin:0 4px;
+}
+.align-text {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.change-upper-section-height {
+    min-height: 12vh !important;
+}
+.change-bottom-section-height {
+    min-height: 88vh !important;
+}
+.items-wrapper {
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
 .buttons-wrapper {
+    justify-content: center;
     margin: 10px 0;
-    width: fit-content;
 }
 
 .red_border {
-    outline: 4px red dotted !important;
+    outline: 2px white solid !important;
 }
 
 a {
-    text-decoration: underline;
-    color: black;
+    text-decoration: none;
+    color: rgb(102, 151, 255);
     font-size: 30px;
 }
 
 .info-wrapper {
-    border: 1px black solid;
-    width: fit-content;
+    border: 1px white solid;
+    background-color: rgb(0, 0, 0);
+    margin-bottom:14px;
+    max-width: 90%;
+}
+.selected {
+    background-color: hsl(0, 0%, 9%);
+}
+.info-wrapper img {
+    width: 240px;
+    max-height: 220px;
+    object-fit: cover;
+}
+.info-wrapper a {
+    width:fit-content;
+}
+.info-wrapper h1  {
+    width:400px;
 }
 
 .small-margin-right {
@@ -210,13 +271,14 @@ a {
 }
 
 .inputs-wrapper {
+    width:100%;
     display: flex;
-    flex-direction: column;
-    width: 240px;
+    justify-content: center;
 }
 
 .inputs-wrapper .InputText {
     margin-bottom: 2px;
+    max-height: 40px;
 }
 
 .container {
@@ -227,6 +289,7 @@ a {
 .login-text {
     margin-bottom: 20px;
     font-size: 30px;
+    color:black !important;
 }
 
 .m-left-6 {
@@ -238,5 +301,31 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+body {
+  font-family: Helvetica;
+}
+.lower-section,
+.upper-section {
+  color: rgba(#2980b9, 0.5);
+} 
+.upper-section span {
+    font-size: 2.2rem;
+}
+.upper-section {
+  min-height: 24vh;
+  width: 100%;
+  background: #34495e;
+  
+}
+.lower-section{
+    padding-top: 50px;
+  min-height: 76vh;
+  width: 100%;
+  background:  #2c3e50;
+}
+.smaller-text {
+    font-size: 26px !important;
 }
 </style>
